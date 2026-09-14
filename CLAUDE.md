@@ -6,39 +6,41 @@ Begitu user bilang **"cek iklan"**, langsung kirim laporan di bawah ini tanpa na
 balik, tanpa minta konfirmasi format, tanpa nanya akun mana.
 
 - Data pakai `date_preset=today`.
-- Dua akun: **SVO 01** (`2385832538283520`) dan **SVO 03** (`428182959794476`).
-- Dua-duanya dapat blok lengkap. Tabel adset tidak dipotong.
+- Satu akun saja: **SVO 01** (`2385832538283520`).
+- **SVO 03 (`428182959794476`) tidak dipakai.** Jangan tarik datanya, jangan bikin
+  bloknya, jangan sebut di laporan.
+- Tabel adset tidak dipotong.
 
 ### Urutan output (persis begini, semua blok pakai emot)
 
-**1. 📊 Tabel "ada kontak" per akun**
-Heading: `📊 SVO 0X — ada kontak`.
+**1. 📊 Tabel "ada kontak"**
+Heading: `📊 SVO 01 — ada kontak`.
 Kolom: Adset, Spend, Kontak, CPL, Pembelian, CPR. Urut spend terbesar.
 Tanpa kolom ATC atau kolom tambahan apa pun. Pembelian/CPR kosong ditulis `—`.
 Adset 0 kontak **tidak boleh nyempil** di tabel ini, sekalipun cuma satu baris.
 Cek ulang sebelum kirim.
 
-**2. ⚫ Blok "0 kontak" per akun**
-Heading: `⚫ SVO 0X — 0 kontak`.
+**2. ⚫ Blok "0 kontak"**
+Heading: `⚫ SVO 01 — 0 kontak`.
 Satu baris, dipisah ` · `, format `EMOT NAMA spend`. Nama adset + spend saja.
 
-**3. 💰 TOTAL per akun**
-`💰 TOTAL SVO 0X`: Spend Rp x · n pembelian · CPR Rp x.
+**3. 💰 TOTAL**
+`💰 TOTAL SVO 01`: Spend Rp x · n pembelian · CPR Rp x.
 **Wajib diambil dari level `ad_account`, bukan dijumlah dari tabel adset.**
 Adset yang dipause siang tetap sudah belanja; kalau dibuang, angka jadi kelihatan
 lebih bagus dari kenyataan.
 
 **4. 🛒 Adset yang menghasilkan purchase**
-Per akun satu baris: `SVO 0X — NAMA (n × CPR) · ...`. Termasuk adset yang sudah
-paused. Kalau nol, tulis `Belum ada purchase hari ini`.
+Satu baris: `NAMA (n × CPR) · ...`. Termasuk adset yang sudah paused.
+Kalau nol, tulis `Belum ada purchase hari ini`.
 
-**5. 📦 Ringkasan gabungan 2 akun**
+**5. 📦 Ringkasan**
 - Anggaran direncanakan = jumlah `daily_budget` semua adset yang sempat jalan hari
   ini, ACTIVE maupun PAUSED.
 - Sudah jalan dari pagi = total spend.
 - Sisa anggaran. Kalau spend melebihi budget tulis `Lewat Rp x`
   (Meta boleh overspend harian sampai 25%).
-- Plus total purchase gabungan.
+- Plus total purchase.
 
 **6. 🚫 Kill candidate — dua aturan saja**
 - (a) spend ≥ Rp75.000 dan **0 kontak**
@@ -86,6 +88,8 @@ muncul di blok kill candidate).
   - CPL = angka itu langsung.
   - Kalau kosong, fallback ke
     `cost_per_action_type:onsite_conversion.messaging_conversation_started_7d`.
+  - Catatan API: minta field `cost_per_action_type` polos (bukan
+    `cost_per_action_type:<sub>`), lalu baca sub-key-nya dari hasil.
 - **Pembelian** dari `omni_purchase`, **CPR** dari `cost_per_omni_purchase`.
 - Jangan pakai blockquote atau border di output yang mau dicopy.
 - **Jangan pause atau ubah status apa pun tanpa perintah user.**
