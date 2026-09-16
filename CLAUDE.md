@@ -53,20 +53,15 @@ Dikecualikan cuma satu:
 1. Adset yang punya purchase hari itu — sebut alasannya singkat, tulis terpisah:
    `X dikecualikan — alasan`.
 
-10 adset 24 jam **tidak lagi dikecualikan** — mereka ikut aturan (a) dan (b) sama
-seperti adset lain.
+Tidak ada grup adset yang dikecualikan. Semua adset — termasuk DVN NOVIA, MIX 1-4,
+TESTI2, SURAT CINTA, SUAMI, TUMIT KAKI, DVN SGLOW — masuk tabel biasa di blok 1 dan 2
+dan ikut aturan (a) dan (b) sama seperti yang lain.
 
 Format: bullet nama + alasan singkat; adset 0 kontak yang spend udah lewat batas
 boleh digabung satu bullet.
 Sebelum kirim, **scan ulang blok 1 dan 2**: tiap baris 0 kontak dengan spend ≥ 75rb,
 dan tiap baris 1 kontak dengan spend ≥ 150rb, harus ada di blok ini.
 Kalau tidak ada sama sekali, tulis `Belum ada kill candidate`.
-
-**7. 📋 Tabel performa 10 adset 24 jam**
-DVN NOVIA, MIX 1, MIX 2, MIX 3, MIX 4, TESTI2, SURAT CINTA, SUAMI, TUMIT KAKI,
-DVN SGLOW. Kolom sama seperti tabel nomor 1.
-Tabel ini cuma buat mantau grup itu di satu tempat. Statusnya sama seperti adset lain:
-kalau kena aturan (a) atau (b), wajib masuk blok kill candidate.
 
 ### Emot status (wajib di depan nama adset di SEMUA baris, semua blok)
 
