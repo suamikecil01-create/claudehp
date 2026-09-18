@@ -10,6 +10,11 @@ balik, tanpa minta konfirmasi format, tanpa nanya akun mana.
 - **SVO 03 (`428182959794476`) tidak dipakai.** Jangan tarik datanya, jangan bikin
   bloknya, jangan sebut di laporan.
 - Tabel adset tidak dipotong.
+- **Adset yang statusnya sudah PAUSED tidak dimunculkan lagi di tabel/blok manapun**
+  (tabel 1, blok 0 kontak, blok purchase, kill candidate) — biar enak dibaca. Satu-satunya
+  pengecualian adalah blok 3 TOTAL, yang tetap angka level `ad_account` (termasuk spend
+  adset yang sudah dipause). Tidak ada lagi status "10 adset 24 jam" yang dikunci/dikecualikan
+  — semua adset ACTIVE dinilai dengan aturan yang sama, termasuk bisa jadi kill candidate.
 
 ### Urutan output (persis begini, semua blok pakai emot)
 
@@ -31,7 +36,8 @@ Adset yang dipause siang tetap sudah belanja; kalau dibuang, angka jadi kelihata
 lebih bagus dari kenyataan.
 
 **4. 🛒 Adset yang menghasilkan purchase**
-Satu baris: `NAMA (n × CPR) · ...`. Termasuk adset yang sudah paused.
+Satu baris: `NAMA (n × CPR) · ...`. Hanya adset yang masih ACTIVE (adset yang sudah
+PAUSED tidak dimunculkan lagi, sesuai aturan di atas).
 Kalau nol, tulis `Belum ada purchase hari ini`.
 
 **5. 📦 Ringkasan**
@@ -49,22 +55,18 @@ Kalau nol, tulis `Belum ada purchase hari ini`.
 Tidak ada pembeda siang/sore. Tidak ada kriteria CPL. Semua yang kena (a) atau (b)
 wajib masuk, jam berapa pun laporannya. Jangan bikin kriteria sendiri.
 
-Dikecualikan cuma dua:
+Dikecualikan cuma satu:
 1. Adset yang punya purchase hari itu — sebut alasannya singkat, tulis terpisah:
    `X dikecualikan — alasan`.
-2. 10 adset 24 jam.
+
+(Adset yang sudah PAUSED otomatis tidak muncul di blok 1/2, jadi otomatis juga tidak
+muncul di sini — tidak perlu dicek lagi.)
 
 Format: bullet nama + alasan singkat; adset 0 kontak yang spend udah lewat batas
 boleh digabung satu bullet.
 Sebelum kirim, **scan ulang blok 1 dan 2**: tiap baris 0 kontak dengan spend ≥ 75rb,
 dan tiap baris 1 kontak dengan spend ≥ 150rb, harus ada di blok ini.
 Kalau tidak ada sama sekali, tulis `Belum ada kill candidate`.
-
-**7. 🔒 Tabel performa 10 adset 24 jam**
-DVN NOVIA, MIX 1, MIX 2, MIX 3, MIX 4, TESTI2, SURAT CINTA, SUAMI, TUMIT KAKI,
-DVN SGLOW. Kolom sama seperti tabel nomor 1.
-Ini **laporan saja** — 10 adset ini TIDAK PERNAH masuk kill candidate dan tidak boleh
-disarankan dimatikan, meski CPL atau CPR-nya jelek.
 
 ### Emot status (wajib di depan nama adset di SEMUA baris, semua blok)
 
@@ -74,7 +76,6 @@ disarankan dimatikan, meski CPL atau CPR-nya jelek.
 | 🟡 | pantau — ada kontak, belum purchase |
 | 🔴 | kill candidate — kena aturan (a) atau (b) |
 | ⚫ | 0 kontak — spend belum lewat batas 75rb |
-| 🔒 | 10 adset 24 jam |
 
 Di blok 0 kontak: adset spend < 75rb pakai ⚫, spend ≥ 75rb pakai 🔴 (dan otomatis
 muncul di blok kill candidate).
