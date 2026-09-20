@@ -35,8 +35,15 @@ Satu baris: `NAMA (n × CPR) · ...`. Termasuk adset yang sudah paused.
 Kalau nol, tulis `Belum ada purchase hari ini`.
 
 **5. 📦 Ringkasan**
-- Anggaran direncanakan = jumlah `daily_budget` semua adset yang sempat jalan hari
-  ini, ACTIVE maupun PAUSED.
+- Anggaran direncanakan **dihitung ulang tiap laporan** — jangan pakai angka hafalan
+  dari laporan sebelumnya, budget berubah tiap hari.
+  - **ABO**: jumlah `daily_budget` semua adset yang sempat jalan hari ini, ACTIVE
+    maupun PAUSED.
+  - **CBO**: adset yang `daily_budget`-nya kosong artinya budget ada di level
+    campaign. Tarik `daily_budget` campaign-nya (level `campaign`), hitung sekali
+    per campaign — bukan per adset.
+  - Total = ABO + CBO. Kalau langkah CBO dilewat, angkanya kelihatan lebih kecil
+    dari kenyataan dan laporan salah bilang "Lewat" padahal masih sisa.
 - Sudah jalan dari pagi = total spend.
 - Sisa anggaran. Kalau spend melebihi budget tulis `Lewat Rp x`
   (Meta boleh overspend harian sampai 25%).
