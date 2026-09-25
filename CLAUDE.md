@@ -70,6 +70,13 @@ Sebelum kirim, **scan ulang blok 1 dan 2**: tiap baris 0 kontak dengan spend ≥
 dan tiap baris 1 kontak dengan spend ≥ 150rb, harus ada di blok ini.
 Kalau tidak ada sama sekali, tulis `Belum ada kill candidate`.
 
+Di bawah tabel kill candidate selalu tambahkan sub-blok **⚠️ Mendekati** (hanya
+laporan, BUKAN kill candidate, jangan di-pause tanpa perintah):
+- 0 kontak yang spend-nya paling dekat ke Rp75.000 (2–3 teratas, pakai ⚫).
+- 1 kontak dengan spend > Rp100.000 tapi belum 150rb (pakai 🟡).
+Kolom: Adset | Spend | Kontak | Kurang ke ambang. ACTIVE saja, adset yang punya
+purchase tidak dimasukkan.
+
 **7. 🔒 Tabel performa 10 adset 24 jam**
 DVN NOVIA, MIX 1, MIX 2, MIX 3, MIX 4, TESTI2, SURAT CINTA, SUAMI, TUMIT KAKI,
 DVN SGLOW. Kolom sama seperti tabel nomor 1.
