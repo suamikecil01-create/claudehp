@@ -10,6 +10,10 @@ balik, tanpa minta konfirmasi format, tanpa nanya akun mana.
 - **SVO 03 (`428182959794476`) tidak dipakai.** Jangan tarik datanya, jangan bikin
   bloknya, jangan sebut di laporan.
 - Tabel adset tidak dipotong.
+- **Adset yang statusnya sudah PAUSED tidak dimunculkan lagi di tabel/blok manapun**
+  (tabel 1, blok 0 kontak, blok purchase, kill candidate) — biar enak dibaca. Satu-satunya
+  pengecualian adalah blok 3 TOTAL, yang tetap angka level `ad_account` (termasuk spend
+  adset yang sudah dipause), dan anggaran direncanakan di blok 5.
 
 ### Urutan output (persis begini, semua blok pakai emot)
 
@@ -31,12 +35,19 @@ Adset yang dipause siang tetap sudah belanja; kalau dibuang, angka jadi kelihata
 lebih bagus dari kenyataan.
 
 **4. 🛒 Adset yang menghasilkan purchase**
-Satu baris: `NAMA (n × CPR) · ...`. Termasuk adset yang sudah paused.
+Satu baris: `NAMA (n × CPR) · ...`. Hanya adset yang masih ACTIVE.
 Kalau nol, tulis `Belum ada purchase hari ini`.
 
 **5. 📦 Ringkasan**
-- Anggaran direncanakan = jumlah `daily_budget` semua adset yang sempat jalan hari
-  ini, ACTIVE maupun PAUSED.
+- Anggaran direncanakan **dihitung ulang tiap laporan** — jangan pakai angka hafalan
+  dari laporan sebelumnya, budget berubah tiap hari.
+  - **ABO**: jumlah `daily_budget` semua adset yang sempat jalan hari ini, ACTIVE
+    maupun PAUSED.
+  - **CBO**: adset yang `daily_budget`-nya kosong artinya budget ada di level
+    campaign. Tarik `daily_budget` campaign-nya (level `campaign`), hitung sekali
+    per campaign — bukan per adset.
+  - Total = ABO + CBO. Kalau langkah CBO dilewat, angkanya kelihatan lebih kecil
+    dari kenyataan dan laporan salah bilang "Lewat" padahal masih sisa.
 - Sudah jalan dari pagi = total spend.
 - Sisa anggaran. Kalau spend melebihi budget tulis `Lewat Rp x`
   (Meta boleh overspend harian sampai 25%).
@@ -49,8 +60,12 @@ Kalau nol, tulis `Belum ada purchase hari ini`.
 Tidak ada pembeda siang/sore. Tidak ada kriteria CPL. Semua yang kena (a) atau (b)
 wajib masuk, jam berapa pun laporannya. Jangan bikin kriteria sendiri.
 
-Dikecualikan cuma satu: adset yang punya purchase hari itu — sebut alasannya
-singkat, tulis terpisah: `X dikecualikan — alasan`.
+Dikecualikan cuma satu:
+1. Adset yang punya purchase hari itu — sebut alasannya singkat, tulis terpisah:
+   `X dikecualikan — alasan`.
+
+**Tidak ada adset yang dikunci.** Tidak ada daftar "10 adset 24 jam". Semua adset
+diperlakukan sama — kena aturan (a) atau (b), masuk kill candidate.
 
 Format: bullet nama + alasan singkat; adset 0 kontak yang spend udah lewat batas
 boleh digabung satu bullet.
