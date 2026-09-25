@@ -42,6 +42,16 @@ Kalau nol, tulis `Belum ada purchase hari ini`.
   (Meta boleh overspend harian sampai 25%).
 - Plus total purchase.
 
+**5b. 📈 Adset yang kontaknya nambah**
+Taruh tepat sebelum blok Kill candidate (Kill candidate tetap paling bawah).
+Bandingkan kontak tiap adset dengan cek pertama dan cek sebelumnya di sesi yang sama.
+Kolom: Adset | Kontak cek pertama (jam) | Kontak cek sebelumnya (jam) | Kontak sekarang |
+Nambah | Spend. Urut dari tambahan terbesar; adset yang udah di-pause tetap dimasukkan,
+ditandai `(sudah di-pause)`.
+Tutup dengan satu kalimat: berapa total kontak nambah sejak cek pertama, dan adset
+mana saja yang nambah sejak cek sebelumnya.
+Kalau ini cek pertama di sesi, tulis `belum ada pembanding (cek pertama)`.
+
 **6. 🚫 Kill candidate — dua aturan saja**
 - (a) spend ≥ Rp75.000 dan **0 kontak**
 - (b) spend ≥ Rp150.000 dan **1 kontak**
