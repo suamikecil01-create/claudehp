@@ -59,10 +59,8 @@ Kalau ini cek pertama di sesi, tulis `belum ada pembanding (cek pertama)`.
 Tidak ada pembeda siang/sore. Tidak ada kriteria CPL. Semua yang kena (a) atau (b)
 wajib masuk, jam berapa pun laporannya. Jangan bikin kriteria sendiri.
 
-Dikecualikan cuma dua:
-1. Adset yang punya purchase hari itu — sebut alasannya singkat, tulis terpisah:
-   `X dikecualikan — alasan`.
-2. 10 adset 24 jam.
+Dikecualikan cuma satu: adset yang punya purchase hari itu — sebut alasannya
+singkat, tulis terpisah: `X dikecualikan — alasan`.
 
 Format: bullet nama + alasan singkat; adset 0 kontak yang spend udah lewat batas
 boleh digabung satu bullet.
@@ -77,12 +75,6 @@ laporan, BUKAN kill candidate, jangan di-pause tanpa perintah):
 Kolom: Adset | Spend | Kontak | Kurang ke ambang. ACTIVE saja, adset yang punya
 purchase tidak dimasukkan.
 
-**7. 🔒 Tabel performa 10 adset 24 jam**
-DVN NOVIA, MIX 1, MIX 2, MIX 3, MIX 4, TESTI2, SURAT CINTA, SUAMI, TUMIT KAKI,
-DVN SGLOW. Kolom sama seperti tabel nomor 1.
-Ini **laporan saja** — 10 adset ini TIDAK PERNAH masuk kill candidate dan tidak boleh
-disarankan dimatikan, meski CPL atau CPR-nya jelek.
-
 ### Emot status (wajib di depan nama adset di SEMUA baris, semua blok)
 
 | Emot | Arti |
@@ -91,7 +83,6 @@ disarankan dimatikan, meski CPL atau CPR-nya jelek.
 | 🟡 | pantau — ada kontak, belum purchase |
 | 🔴 | kill candidate — kena aturan (a) atau (b) |
 | ⚫ | 0 kontak — spend belum lewat batas 75rb |
-| 🔒 | 10 adset 24 jam |
 
 Di blok 0 kontak: adset spend < 75rb pakai ⚫, spend ≥ 75rb pakai 🔴 (dan otomatis
 muncul di blok kill candidate).
