@@ -10,6 +10,10 @@ balik, tanpa minta konfirmasi format, tanpa nanya akun mana.
 - **SVO 03 (`428182959794476`) tidak dipakai.** Jangan tarik datanya, jangan bikin
   bloknya, jangan sebut di laporan.
 - Tabel adset tidak dipotong.
+- **Adset/campaign yang sudah PAUSED tidak ditampilkan** di blok mana pun (tabel,
+  0 kontak, purchase, 📈, kill candidate, mendekati). Pakai `effective_status` =
+  ACTIVE saja. Pengecualian: angka TOTAL tetap dari level akun (spend yang sudah
+  keluar dari adset paused tetap dihitung).
 
 ### Urutan output (persis begini, semua blok pakai emot)
 
@@ -31,7 +35,7 @@ Adset yang dipause siang tetap sudah belanja; kalau dibuang, angka jadi kelihata
 lebih bagus dari kenyataan.
 
 **4. 🛒 Adset yang menghasilkan purchase**
-Satu baris: `NAMA (n × CPR) · ...`. Termasuk adset yang sudah paused.
+Satu baris: `NAMA (n × CPR) · ...`. ACTIVE saja.
 Kalau nol, tulis `Belum ada purchase hari ini`.
 
 **5. 📦 Ringkasan**
@@ -46,8 +50,7 @@ Kalau nol, tulis `Belum ada purchase hari ini`.
 Taruh tepat sebelum blok Kill candidate (Kill candidate tetap paling bawah).
 Bandingkan kontak tiap adset dengan cek pertama dan cek sebelumnya di sesi yang sama.
 Kolom: Adset | Kontak cek pertama (jam) | Kontak cek sebelumnya (jam) | Kontak sekarang |
-Nambah | Spend | CPL saat ini. Urut dari tambahan terbesar; adset yang udah di-pause tetap dimasukkan,
-ditandai `(sudah di-pause)`.
+Nambah | Spend | CPL saat ini. Urut dari tambahan terbesar. ACTIVE saja.
 Tutup dengan satu kalimat: berapa total kontak nambah sejak cek pertama, dan adset
 mana saja yang nambah sejak cek sebelumnya.
 Kalau ini cek pertama di sesi, tulis `belum ada pembanding (cek pertama)`.
@@ -56,8 +59,8 @@ Kalau ini cek pertama di sesi, tulis `belum ada pembanding (cek pertama)`.
 - (a) spend ≥ Rp75.000 dan **0 kontak**
 - (b) spend ≥ Rp150.000 dan **1 kontak**
 
-Tidak ada pembeda siang/sore. Tidak ada kriteria CPL. Semua yang kena (a) atau (b)
-wajib masuk, jam berapa pun laporannya. Jangan bikin kriteria sendiri.
+Tidak ada pembeda siang/sore. Tidak ada kriteria CPL. Semua adset ACTIVE yang kena
+(a) atau (b) wajib masuk, jam berapa pun laporannya. Jangan bikin kriteria sendiri.
 
 Dikecualikan cuma satu: adset yang punya purchase hari itu — sebut alasannya
 singkat, tulis terpisah: `X dikecualikan — alasan`.
