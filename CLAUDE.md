@@ -99,3 +99,23 @@ muncul di blok kill candidate).
 - Kalau user kasih perintah matiin pakai angka tanpa nyebut metriknya
   (misal "matiin yang di atas 75k"), **jangan langsung eksekusi** — tanya dulu
   spend atau CPL.
+
+## EVALUASI MALAM — STANDING ORDER
+
+Begitu user bilang **"evaluasi malam"**, langsung kirim laporan tanpa nanya balik.
+
+- Akun: **SVO 01** (`2385832538283520`) saja. SVO 03 tidak dipakai.
+- Langkah 1 — cari **adset yang jalan hari itu** (spend > 0 pada hari itu).
+  Kalau `date_preset=today` kosong karena akun sudah lewat tengah malam, pakai
+  `yesterday`. Pastikan tanggalnya lewat `time_range` dan **tulis tanggalnya**
+  di laporan (contoh: `adset yang jalan 13/10`).
+- Langkah 2 — tarik data **`date_preset=maximum`** (seumur hidup) **khusus adset-adset
+  itu saja** (pakai `object_ids`). Jangan tarik semua adset akun.
+- Format: blok sama seperti CEK IKLAN (tabel ada kontak, blok 0 kontak, total,
+  adset purchase, tabel 10 adset 24 jam), angka semuanya maximum.
+  - Emot: 🟢 ada purchase (lifetime), 🟡 ada kontak belum purchase, ⚫ 0 kontak,
+    🔒 10 adset 24 jam.
+  - TOTAL = jumlah maximum adset-adset tsb (bukan level akun, karena akun berisi
+    adset lain).
+  - Aturan kill candidate CEK IKLAN itu harian — tidak dipakai di sini.
+- Aturan teknis (kontak, CPL, pembelian, CPR) sama dengan CEK IKLAN.
