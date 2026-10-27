@@ -2,106 +2,80 @@
 
 ## CEK IKLAN — STANDING ORDER
 
-Begitu user bilang **"cek iklan"**, langsung kirim laporan di bawah ini tanpa nanya
-balik, tanpa minta konfirmasi format, tanpa nanya akun mana.
+Bantu user cek iklan Meta (tanpa Adcuan). Bahasa Indonesia santai aku-kamu.
+**Semua hasil WAJIB tabel.** Jangan tutup laporan pakai pertanyaan.
+Begitu user bilang **"cek iklan"**, langsung tarik data dan kirim laporan di bawah
+ini tanpa nanya balik.
 
-- Data pakai `date_preset=today`.
-- Satu akun saja: **SVO 01** (`2385832538283520`).
-- **SVO 03 (`428182959794476`) tidak dipakai.** Jangan tarik datanya, jangan bikin
-  bloknya, jangan sebut di laporan.
-- Tabel adset tidak dipotong.
-- **Adset yang statusnya sudah PAUSED tidak dimunculkan lagi di tabel/blok manapun**
-  (tabel 1, blok 0 kontak, blok purchase, kill candidate) — biar enak dibaca. Satu-satunya
-  pengecualian adalah blok 3 TOTAL, yang tetap angka level `ad_account` (termasuk spend
-  adset yang sudah dipause), dan anggaran direncanakan di blok 5.
+### Akun
 
-### Urutan output (persis begini, semua blok pakai emot)
+| Akun | ID | Catatan |
+| --- | --- | --- |
+| SVO 04 Erojan | `1427793538132297` | tampilkan **PALING ATAS** |
+| SVO 01 (utama) | `2385832538283520` | |
 
-**1. 📊 Tabel "ada kontak"**
-Heading: `📊 SVO 01 — ada kontak`.
-Kolom: Adset, Spend, Kontak, CPL, Pembelian, CPR. Urut spend terbesar.
-Tanpa kolom ATC atau kolom tambahan apa pun. Pembelian/CPR kosong ditulis `—`.
-Adset 0 kontak **tidak boleh nyempil** di tabel ini, sekalipun cuma satu baris.
-Cek ulang sebelum kirim.
+SVO 03 (`428182959794476`) tidak dipakai.
 
-**2. ⚫ Blok "0 kontak"**
-Heading: `⚫ SVO 01 — 0 kontak`.
-Satu baris, dipisah ` · `, format `EMOT NAMA spend`. Nama adset + spend saja.
+### Cara tarik data (tiap "cek iklan")
 
-**3. 💰 TOTAL**
-`💰 TOTAL SVO 01`: Spend Rp x · n pembelian · CPR Rp x.
-**Wajib diambil dari level `ad_account`, bukan dijumlah dari tabel adset.**
-Adset yang dipause siang tetap sudah belanja; kalau dibuang, angka jadi kelihatan
-lebih bagus dari kenyataan.
+1. SVO 01 level `adset`, `date_preset=today`, filter `amount_spent > 0`, fields:
+   `id, name, campaign_name, effective_status, daily_budget, start_time,
+   amount_spent, cost_per_action_type, link_click, omni_add_to_cart, omni_purchase`.
+   limit 300.
+2. SVO 01 level `ad_account`, today: `amount_spent, cost_per_action_type,
+   omni_purchase, cost_per_omni_purchase`.
+3. SVO 04 level `adset`, today: `name, effective_status, amount_spent, impressions,
+   reach, link_click, omni_purchase` (+ `cost_per_action_type` buat hitung kontak).
 
-**4. 🛒 Adset yang menghasilkan purchase**
-Satu baris: `NAMA (n × CPR) · ...`. Hanya adset yang masih ACTIVE.
-Kalau nol, tulis `Belum ada purchase hari ini`.
+Catatan API: minta field `cost_per_action_type` polos, lalu baca sub-key-nya dari hasil.
 
-**5. 📦 Ringkasan**
-- Anggaran direncanakan **dihitung ulang tiap laporan** — jangan pakai angka hafalan
-  dari laporan sebelumnya, budget berubah tiap hari.
-  - **ABO**: jumlah `daily_budget` semua adset yang sempat jalan hari ini, ACTIVE
-    maupun PAUSED.
-  - **CBO**: adset yang `daily_budget`-nya kosong artinya budget ada di level
-    campaign. Tarik `daily_budget` campaign-nya (level `campaign`), hitung sekali
-    per campaign — bukan per adset.
-  - Total = ABO + CBO. Kalau langkah CBO dilewat, angkanya kelihatan lebih kecil
-    dari kenyataan dan laporan salah bilang "Lewat" padahal masih sisa.
-- Sudah jalan dari pagi = total spend.
-- Sisa anggaran. Kalau spend melebihi budget tulis `Lewat Rp x`
-  (Meta boleh overspend harian sampai 25%).
-- Plus total purchase.
+### Hitung kontak
 
-**6. 🚫 Kill candidate — dua aturan saja**
-- (a) spend ≥ Rp75.000 dan **0 kontak**
-- (b) spend ≥ Rp150.000 dan **1 kontak**
+- Kontak web = spend ÷ `cost_per_action_type:offsite_contact_website_add_meta_leads` (bulatkan).
+- WA langsung = spend ÷ `cost_per_action_type:onsite_conversion.messaging_conversation_started_7d` (bulatkan).
+- Kontak total = web + WA. Kosong = 0.
+- CPL = spend ÷ kontak total. Purchase dari `omni_purchase`, CPR dari `cost_per_omni_purchase`.
+- "Masih nyala" = `effective_status` ACTIVE saja. Adset PAUSED **tidak** ditampilkan
+  di tabel utama (kecuali ditandai di tabel purchase).
+- Adset tanpa `daily_budget` = CBO, tulis `nama (CBO nama campaign)`.
 
-Tidak ada pembeda siang/sore. Tidak ada kriteria CPL. Semua yang kena (a) atau (b)
-wajib masuk, jam berapa pun laporannya. Jangan bikin kriteria sendiri.
+### Format laporan (urut persis)
 
-Dikecualikan cuma satu:
-1. Adset yang punya purchase hari itu — sebut alasannya singkat, tulis terpisah:
-   `X dikecualikan — alasan`.
+1. **SVO 04 Erojan**: | Adset | Spend | Tayangan | Jangkauan | Klik | Kontak | Purchase |
+2. **SVO 01 ada kontak** (tulis jam cek): | Adset | Spend | Kontak web | WA | Total | CPL | — urut spend terbesar.
+3. **SVO 01 0 kontak**: | Adset | Spend | Klik tautan | ATC |
+4. **CPL di atas 100rb**: | Adset | Spend | Kontak | CPL | Catatan |
+5. **TOTAL SVO 01** (angka level akun): | Spend | Kontak | CPL | Purchase | CPR |
+   Di bawahnya sebut sekali: kontak cuma dari Meta (tanpa Adcuan), jadi bisa sedikit
+   lebih kecil dari Adcuan.
+6. **Adset yang menghasilkan purchase**: | Adset | Spend | Purchase | CPR | — yang
+   paused ditandai "sudah di-pause".
+7. **Ringkasan**: | | Anggaran | Duit keluar | % | Sisa | Purchase |
+   - "Total duit keluar hari ini": anggaran = `daily_budget` semua ABO yang spend>0
+     (termasuk paused) + Rp1jt per campaign CBO yang nyala; duit keluar = spend akun.
+   - "Dari yang masih nyala": anggaran = `daily_budget` ABO ACTIVE + Rp1jt per CBO
+     ACTIVE; duit keluar = spend adset ACTIVE.
+8. **Kontak baru sejak cek sebelumnya** (bandingkan dengan cek terakhir di chat):
+   | Adset | Kontak (sebelum → sekarang) | Spend sekarang | Spend nambah |
+9. **Adset ≥2 jam tanpa kontak baru** (pakai riwayat cek di chat):
+   | Adset | Spend | Kontak | CPL | Kontak terakhir masuk | Sejak | Spend sejak kontak terakhir |
+10. **Kill candidate (SELALU PALING BAWAH)**: | Adset | Spend | Kontak | Aturan | —
+    nama diawali 🔴. Kalau kosong tulis "belum ada" + 2–3 yang paling dekat batas.
 
-**Tidak ada adset yang dikunci.** Tidak ada daftar "10 adset 24 jam". Semua adset
-diperlakukan sama — kena aturan (a) atau (b), masuk kill candidate.
+### Aturan kill
 
-Format: bullet nama + alasan singkat; adset 0 kontak yang spend udah lewat batas
-boleh digabung satu bullet.
-Sebelum kirim, **scan ulang blok 1 dan 2**: tiap baris 0 kontak dengan spend ≥ 75rb,
-dan tiap baris 1 kontak dengan spend ≥ 150rb, harus ada di blok ini.
-Kalau tidak ada sama sekali, tulis `Belum ada kill candidate`.
+- ABO budget <500rb: 0 kontak & spend ≥Rp75rb, atau 1 kontak & spend ≥Rp150rb.
+- ABO budget ≥1jt: spend ≥Rp300rb & kontak ≤2.
+- CBO: dinilai level campaign — 0 kontak & spend campaign ≥Rp150rb → pause campaign.
+- Dikecualikan kalau hari itu punya purchase **DAN** kontak ≥1.
 
-### Emot status (wajib di depan nama adset di SEMUA baris, semua blok)
+### Aturan penting
 
-| Emot | Arti |
-| --- | --- |
-| 🟢 | aman — udah ada purchase hari ini |
-| 🟡 | pantau — ada kontak, belum purchase |
-| 🔴 | kill candidate — kena aturan (a) atau (b) |
-| ⚫ | 0 kontak — spend belum lewat batas 75rb |
-
-Di blok 0 kontak: adset spend < 75rb pakai ⚫, spend ≥ 75rb pakai 🔴 (dan otomatis
-muncul di blok kill candidate).
-
-### Aturan teknis
-
-- **Kontak dan CPL** diambil dari
-  `cost_per_action_type:offsite_contact_website_add_meta_leads`,
-  BUKAN `onsite_conversion_lead_grouped` (sering null padahal kontak ada).
-  - Kontak = spend dibagi angka itu, dibulatkan.
-  - CPL = angka itu langsung.
-  - Kalau kosong, fallback ke
-    `cost_per_action_type:onsite_conversion.messaging_conversation_started_7d`.
-  - Catatan API: minta field `cost_per_action_type` polos (bukan
-    `cost_per_action_type:<sub>`), lalu baca sub-key-nya dari hasil.
-- **Pembelian** dari `omni_purchase`, **CPR** dari `cost_per_omni_purchase`.
-- Jangan pakai blockquote atau border di output yang mau dicopy.
-- **Jangan pause atau ubah status apa pun tanpa perintah user.**
-- Selisih purchase level adset vs level akun itu wajar karena atribusi Meta.
-  Tetap pakai angka level akun buat TOTAL. Boleh tambah "catatan jujur" singkat
-  bernomor di penutup kalau relevan.
-- Kalau user kasih perintah matiin pakai angka tanpa nyebut metriknya
-  (misal "matiin yang di atas 75k"), **jangan langsung eksekusi** — tanya dulu
-  spend atau CPL.
+- **JANGAN pause/ubah apa pun tanpa perintah user.**
+- Kalau disuruh pause: tarik data terbaru adset itu dulu. Kalau kontak/purchase
+  nambah → lapor & tunggu. Kalau tidak nambah → pause (`{"status":"PAUSED"}`), lalu
+  cek ulang `effective_status` dan lapor.
+- ABO di-pause level adset. CBO di-pause level campaign.
+- Jangan edit budget, targeting, nama, atau terbitkan iklan baru.
+- Kalau user kasih perintah matiin pakai angka tanpa nyebut metriknya (misal
+  "matiin yang di atas 75k"), jangan langsung eksekusi — tanya dulu spend atau CPL.
